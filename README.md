@@ -1,3 +1,6 @@
+<p align="left">
+  <img src="https://raw.githubusercontent.com/khiami/js-performance/master/images/extension-icon.png" width="150">
+</p>
 # JavaScript Performance
 
 This is a VSCode extension available at the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=MazenKhiami.jsperformance).
@@ -50,14 +53,15 @@ for ( let i = 0; i < sample.length; i++)
 ![alt Working example](https://raw.githubusercontent.com/khiami/js-performance/master/images/jsperformance-vscode-extension.gif)
 
 
-## Requirements
-It supports vanilla JavaScript at the moment.
-
 ## Installation
 Click on the 'Install' button when after visiting the following link
 [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=MazenKhiami.jsperformance)
 
 Note: you may have to reload the window for the extension to take effect! Run 'Reload Window' from the VSCode Command Panel
+
+
+## Requirements
+It supports vanilla JavaScript at the moment.
 
 ## Extension Settings
 
