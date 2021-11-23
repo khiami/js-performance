@@ -62,8 +62,7 @@ Open Extenion settings to change the (n) of times each case is executed. Default
 
 ## Todo/Future Updates
 
-1. Show more details on the results when the test is finished.
-2. Support wider range of definition/case format
+2. Support wider range of definition/case syntax/format
 3. Support other javascript formats e.g. typescript and jsx
 
 ## Contribute
@@ -71,5 +70,5 @@ Open Extenion settings to change the (n) of times each case is executed. Default
 Feel free to open issues or PRs.
 
 ## Extension Logo
-Attribution to the [flaticon.com](https://www.flaticon.com) for the use of the extension's logo! 
+Attribution to the [flaticon.com](https://www.flaticon.com/premium-icon/rocket_3049618?term=rocket&page=1&position=14) for the use of the extension's logo! 
 
