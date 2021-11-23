@@ -1,6 +1,8 @@
 <p align="left">
   <img src="https://raw.githubusercontent.com/khiami/js-performance/master/images/extension-icon.png" width="150">
 </p>
+
+
 # JavaScript Performance
 
 This is a VSCode extension available at the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=MazenKhiami.jsperformance).
