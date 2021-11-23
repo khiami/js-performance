@@ -102,7 +102,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 					
 					// refresh the benchmark results, highlighted on definition
-					return diagnosticCollecion.set(editor.document.uri, buildDiagnostics(resolvedCases, editor.document))
+					// return diagnosticCollecion.set(editor.document.uri, buildDiagnostics(resolvedCases, editor.document))
 
 				})
 				.catch(e=> 
