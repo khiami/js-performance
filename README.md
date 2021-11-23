@@ -45,6 +45,9 @@ let counter2 = 0;
 for ( let i = 0; i < sample.length; i++)
   sample.charAt(i) === '\n' && counter2++
   ```
+  
+
+![alt Working example](https://raw.githubusercontent.com/khiami/js-performance/master/images/jsperformance-vscode-extension.gif)
 
 
 ## Requirements
