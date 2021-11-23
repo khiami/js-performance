@@ -71,5 +71,5 @@ Open Extenion settings to change the (n) of times each case is executed. Default
 Feel free to open issues or PRs.
 
 ## Extension Logo
-Attribution to the flaticon.com for the use of the extension's logo! 
+Attribution to the [flaticon.com](https://www.flaticon.com) for the use of the extension's logo! 
 
