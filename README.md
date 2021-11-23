@@ -1,5 +1,7 @@
 # JavaScript Performance
 
+This is a VSCode extension available at the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=MazenKhiami.jsperformance).
+
 Run multiple JavaScript test-cases against a certain logic in VS Code and simply find out the fastest one.
 The result will appear in the status bar where the case name will be used. The extension may notify if the highlighted snippet didn't run successfully.
 
@@ -11,7 +13,7 @@ You can create a definition and multiple cases. Once selected, they will be auto
 
 Comply with the format below to run the benchmark successfully:
 
-```
+```javascript
 // definition 
 const arrayValues = [ 11, 33, 44, 55, 44, 55, 102, 1033, 44 ]
 
@@ -25,7 +27,7 @@ const uniqueApproach2 = '...'
 
 Working example
 
-```
+```javascript
 // definition
 const sample = `Lorem Ipsum is simply dummy text of 
   the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown 
