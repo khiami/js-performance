@@ -45,7 +45,7 @@ let counter2 = 0;
 for ( let i = 0; i < sample.length; i++)
   sample.charAt(i) === '\n' && counter2++
   ```
-  
+
 
 ![alt Working example](https://raw.githubusercontent.com/khiami/js-performance/master/images/jsperformance-vscode-extension.gif)
 
@@ -65,8 +65,8 @@ Open Extenion settings to change the (n) of times each case is executed. Default
 
 ## Todo/Future Updates
 
-2. Support wider range of definition/case syntax/format
-3. Support other javascript formats e.g. typescript and jsx
+1. Support wider range of definition/case syntax/format
+2. Support other javascript formats e.g. typescript and jsx
 
 ## Contribute
 
