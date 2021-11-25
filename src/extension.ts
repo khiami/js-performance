@@ -4,12 +4,14 @@ import { Extension, PromiseStatus, StorageKey } from './enum'
 import { Snippet, SnippetCase } from './types'
 
 import { debounce, filterAndJoin, isValid, log, settledPromiseValue } from './utils'
-import { parseSnippet, CustomStatusBar, buildDiagnostics, StorageService, generateCase, captureFastestCase } from './main'
+import { parseSnippet, StatusBarService, buildDiagnostics, StorageService, generateCase, captureFastestCase } from './main'
+
+
 
 export function activate(context: vscode.ExtensionContext) {
 	
 	// create a status bar class-instance
-	const statusBar: CustomStatusBar = new CustomStatusBar()
+	const statusBar: StatusBarService = new StatusBarService()
 
 	// create a diagnostic collection to report the benchmark results
 	const diagnosticCollecion: vscode.DiagnosticCollection = vscode.languages.createDiagnosticCollection('javascript')
@@ -38,16 +40,14 @@ export function activate(context: vscode.ExtensionContext) {
 		// aggregate user selections with a newline char
 		const selectedText: string = !e?.selections?.length ? 
 			'':
-			e?.selections.map(a=> editor.document.getText(a)).join('\n')
+			e?.selections.map(a=> e.textEditor.document.getText(a)).join('\n')
 
 
 		// capture the active file path (necessary to place test-case correctly)
-		const activeFilePath: string|undefined = vscode.window.activeTextEditor?.document?.uri?.fsPath
+		const activeFilePath: string|undefined = e.textEditor.document?.uri?.fsPath
 
 		// terminate with updated status bar message
-		if ( !selectedText?.length || !activeFilePath ) return (
-			statusBar.update( '' ),
-			diagnosticCollecion.clear())
+		if ( !selectedText?.length || !activeFilePath ) return statusBar.update( '' )
 
 		// update status bar messaging
 		statusBar.update( '$(sync~spin) Loading ..' )
@@ -90,18 +90,18 @@ export function activate(context: vscode.ExtensionContext) {
 
 					
 					// refresh the benchmark results, highlighted on definition
-					return diagnosticCollecion.set(editor.document.uri, buildDiagnostics(resolvedCases, editor.document))
+					return diagnosticCollecion.set(e.textEditor.document.uri, buildDiagnostics(resolvedCases, editor.document))
 
 				})
 				.catch(()=> 
-
 					(	
 						log( 'Caught error! Review the selection and try again!' ),
 						diagnosticCollecion.clear()))
 	
 
 	}
-
+	
+	
 	return isValid(storage.get(StorageKey.SELECTION_LISTENER)) ?
 		undefined:
 
@@ -109,6 +109,7 @@ export function activate(context: vscode.ExtensionContext) {
 		context.subscriptions.push(
 			// register listener with debounce effect
 			vscode.window.onDidChangeTextEditorSelection(debounce(onSelectionChange, 5e2)))
+
 
 }
 

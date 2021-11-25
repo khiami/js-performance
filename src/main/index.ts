@@ -1,4 +1,4 @@
-export { CustomStatusBar } from './status-bar'
+export { StatusBarService } from './status-bar.service'
 export { StorageService } from './storage.service'
 export { generateCase } from './build-case'
 export { captureFastestCase } from './fastest-case'

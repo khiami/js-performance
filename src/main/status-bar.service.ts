@@ -1,6 +1,6 @@
 import * as vscode from 'vscode'
 
-export class CustomStatusBar {
+export class StatusBarService {
 
   private statusBar: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 10)
 

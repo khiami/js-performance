@@ -16,7 +16,7 @@ export const buildDiagnostics = (items: SnippetCase[], textDocument: vscode.Text
   const fulfilledWording: string[] = !durationSortedCases?.length ? 
     []:
     [
-      '\r\n', durationSortedCases
+      'Sorted by fastest to slowest', '\r\n', durationSortedCases
       .map((a, index)=> 
         `${index+1}. ${reversedRatio(a.duration!, index, caseDurations)} "${a.label?.trim()}" took ${a.duration?.toFixed(2)} ms`)
       .join('\r\n')]

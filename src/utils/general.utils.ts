@@ -101,9 +101,10 @@ export const isValid = (ob: unknown): boolean=>
 
 export function reversedRatio(value: number, index: number, sequence: number[]): string {
 
-  const ratio: number = !sequence?.length || !~index || !~value || (!!sequence && !!sequence?.length && sequence.length - 1 === index) ?
+  const length: number = sequence?.length
+  const ratio: number = !length || !~index || !~value || (!!sequence && !!length && length - 1 === index) ?
       0:
-      Math.abs(((value - sequence[index+1]) / sequence[index+1]) * 100)
+      Math.abs(((value - sequence[length - 1]) / sequence[length - 1]) * 100)
 
   return !ratio ?
     '0%':
