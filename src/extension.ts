@@ -3,8 +3,8 @@ import { dirname, } from 'path'
 import { Extension, PromiseStatus, StorageKey } from './enum'
 import { Snippet, SnippetCase } from './types'
 
-import { debounce, filterAndJoin, isValid, log, settledPromiseValue } from './utils'
-import { parseSnippet, StatusBarService, buildDiagnostics, StorageService, generateCase, captureFastestCase } from './main'
+import { captureFastestCase, debounce, filterAndJoin, isValid, log, settledPromiseValue } from './utils'
+import { parseSnippet, StatusBarService, buildDiagnostics, StorageService, generateCase } from './main'
 
 
 
@@ -71,7 +71,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 		// show results
 		return !p?.length ?
-			statusBar.update( '' ):
+			(
+				statusBar.update( '' ),
+				diagnosticCollecion.clear()):
 			Promise.allSettled(p)
 				.then((items: PromiseSettledResult<SnippetCase>[])=> {
 

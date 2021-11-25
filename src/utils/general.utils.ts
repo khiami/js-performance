@@ -1,5 +1,6 @@
 import * as vscode from 'vscode'
 import { PromiseStatus } from '../enum'
+import { SnippetCase } from '../types'
 
 export const debounce = <F extends (...args: any[]) => any>(
   func: F,
@@ -116,3 +117,8 @@ export const settledPromiseValue = (items: PromiseSettledResult<any>[]): any[] =
   items
     .filter(a=> a.status === PromiseStatus.FULFILLED)
     .map(a=> (a as { value: any }).value)
+
+
+export const captureFastestCase = (items: SnippetCase[]): SnippetCase => 
+  [ ...items ].sort((a, b)=> 
+    a.duration! - b.duration!)[0]

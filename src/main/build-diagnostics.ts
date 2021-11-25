@@ -41,7 +41,7 @@ export const buildDiagnostics = (items: SnippetCase[], textDocument: vscode.Text
         `The test took ${durationSortedCases.slice(-1)[0]?.duration?.toFixed(2)} ms`, 
         vscode.DiagnosticSeverity.Information)
 
-      diagnostic.source =  'Js Performance'
+      diagnostic.source =  Extension.TITLE
       diagnostic.relatedInformation = [
         {
           message: fulfilledWording.join('\r\n'),
