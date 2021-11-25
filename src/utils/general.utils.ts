@@ -1,4 +1,5 @@
 import * as vscode from 'vscode'
+import { PromiseStatus } from '../enum'
 
 export const debounce = <F extends (...args: any[]) => any>(
   func: F,
@@ -69,12 +70,12 @@ export const sanitizeCaseName = (v: string = ''): string=> {
   
   }
 
-  export const validateObject = (object: unknown): boolean=> 
-    typeof object !== 'undefined' && 
-    !!object && 
-    (typeof object === 'string' ? 
-      !!(<string>object)?.length:
-      true)
+export const validateObject = (object: unknown): boolean=> 
+  typeof object !== 'undefined' && 
+  !!object && 
+  (typeof object === 'string' ? 
+    !!(<string>object)?.length:
+    true)
 
 
 
@@ -83,20 +84,34 @@ export function generateRandomNumber(min?: number, max?: number): number {
   const isMaxValid = min !== undefined && min !== null
   const isMinValid = max !== undefined && max !== null
 
-  if ( isMaxValid && isMinValid ) return ~~(Math.random() * (max - min + 1)) + min
-
-  return Math.round(Math.random() * 1e20) || Math.round(Math.random() * 1e20)
-
-}
-
-export function filterAndJoin(a: any[], separator: string): string {
-
-  return a
-    .filter(b=> !!a && !!b?.length)
-    .join(separator)
+  return isMaxValid && isMinValid  ? 
+    ~~(Math.random() * (max - min + 1)) + min:
+    Math.round(Math.random() * 1e20) || Math.round(Math.random() * 1e20)
 
 }
 
-export function isValid(ob: any): boolean {
-  return ob !== undefined && ob !== null
+export const filterAndJoin = (a: any[], separator: string): string =>
+  a
+  .filter(b=> !!a && !!b?.length)
+  .join(separator)
+
+
+export const isValid = (ob: unknown): boolean=>
+  ob !== undefined && ob !== null
+
+export function reversedRatio(value: number, index: number, sequence: number[]): string {
+
+  const ratio: number = !sequence?.length || !~index || !~value || (!!sequence && !!sequence?.length && sequence.length - 1 === index) ?
+      0:
+      Math.abs(((value - sequence[index+1]) / sequence[index+1]) * 100)
+
+  return !ratio ?
+    '0%':
+    `${ratio.toFixed(2)}%`
+
 }
+
+export const settledPromiseValue = (items: PromiseSettledResult<any>[]): any[] => 
+  items
+    .filter(a=> a.status === PromiseStatus.FULFILLED)
+    .map(a=> (a as { value: any }).value)

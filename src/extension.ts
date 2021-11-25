@@ -3,7 +3,7 @@ import { dirname, } from 'path'
 import { Extension, PromiseStatus, StorageKey } from './enum'
 import { Snippet, SnippetCase } from './types'
 
-import { debounce, filterAndJoin, isValid, log } from './utils'
+import { debounce, filterAndJoin, isValid, log, settledPromiseValue } from './utils'
 import { parseSnippet, CustomStatusBar, buildDiagnostics, StorageService, generateCase, captureFastestCase } from './main'
 
 export function activate(context: vscode.ExtensionContext) {
@@ -19,11 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// reset storage on activation
 	storage.update(StorageKey.SELECTION_LISTENER, null)
-
-
-
-	// run when command is triggered
-	// let disposable = vscode.commands.registerCommand('jsperformance.runBenchmark', () => {
+	
 
 	const editor: vscode.TextEditor | undefined = vscode.window.activeTextEditor
 
@@ -49,7 +45,9 @@ export function activate(context: vscode.ExtensionContext) {
 		const activeFilePath: string|undefined = vscode.window.activeTextEditor?.document?.uri?.fsPath
 
 		// terminate with updated status bar message
-		if ( !selectedText?.length || !activeFilePath ) return statusBar.update( '' )
+		if ( !selectedText?.length || !activeFilePath ) return (
+			statusBar.update( '' ),
+			diagnosticCollecion.clear())
 
 		// update status bar messaging
 		statusBar.update( '$(sync~spin) Loading ..' )
@@ -75,40 +73,31 @@ export function activate(context: vscode.ExtensionContext) {
 		return !p?.length ?
 			statusBar.update( '' ):
 			Promise.allSettled(p)
-				.then((items: any[])=> {
+				.then((items: PromiseSettledResult<SnippetCase>[])=> {
 
-					const resolvedCases: any[] = items?.filter(a=> a.status === PromiseStatus.FULFILLED)
-					const rejectedCases: any[] = items?.filter(a=> a.status === PromiseStatus.REJECTED)
+					const resolvedCases: SnippetCase[] = settledPromiseValue(items)
+					const rejectedCases: any[] = items.filter(a=> a.status === PromiseStatus.REJECTED)
 
-					const fastestCase: SnippetCase = captureFastestCase(items) || <SnippetCase>{}
-					const { label }: SnippetCase = fastestCase
-
-					const resolvedMessage: string = !label?.length ? 
+					const fastestCase: SnippetCase = captureFastestCase(resolvedCases) || <SnippetCase>{}
+					const resolvedMessage: string = !fastestCase?.label?.length ? 
 						'':
-						`Fastest case is "${label}"`
-
-					const rejectedMessage: string|undefined = !rejectedCases?.length ?
-						undefined:
-						`You have ${rejectedCases?.length} rejected case${rejectedCases?.length > 1 ? 's':''}. Double check your selection and try again.`	
+						`Fastest case is "${fastestCase?.label}"`
 
 					const statusBarMessage: Array<string|undefined> = [ resolvedMessage || '', !rejectedCases?.length ? undefined:`${rejectedCases?.length} Rejected case${rejectedCases?.length > 1 ? 's':''}` ]
 
 					// update status bar message
 					statusBar.update( filterAndJoin(statusBarMessage, '. ') )
 
-
-					// todo
-					// 1. register escape button to clear all diagnostics
-
 					
 					// refresh the benchmark results, highlighted on definition
-					// return diagnosticCollecion.set(editor.document.uri, buildDiagnostics(resolvedCases, editor.document))
+					return diagnosticCollecion.set(editor.document.uri, buildDiagnostics(resolvedCases, editor.document))
 
 				})
-				.catch(e=> 
+				.catch(()=> 
 
-					// notify errors when caught
-					log( 'caught error ', e ))
+					(	
+						log( 'Caught error! Review the selection and try again!' ),
+						diagnosticCollecion.clear()))
 	
 
 	}
@@ -120,12 +109,6 @@ export function activate(context: vscode.ExtensionContext) {
 		context.subscriptions.push(
 			// register listener with debounce effect
 			vscode.window.onDidChangeTextEditorSelection(debounce(onSelectionChange, 5e2)))
-
-	// })
-
-
-	// push disposable to terminate when extension is deactivated
-	// return context.subscriptions.push(disposable)
 
 }
 

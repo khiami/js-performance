@@ -1,102 +1,62 @@
 import * as vscode from 'vscode'
-import { Extension } from '../enum'
+import { Extension, PromiseStatus } from '../enum'
 import { SnippetCase } from '../types'
+import { reversedRatio, } from '../utils'
 
 
-export const caseRegexByLabel = (name: string): RegExp=> 
-  new RegExp(`/([\/]{2,}\s+case\s+${name}`, 'i')
+export const buildDiagnostics = (items: SnippetCase[], textDocument: vscode.TextDocument): vscode.Diagnostic[]=> {
+
+  if ( !items?.length ) return []
+
+  const text = textDocument.getText()
+  const caseDurations: number[] = items.map(a=> a.duration!)
 
 
-export const diagonosticByMatching = (matchingItem: any, matching: RegExpExecArray|null, doc: vscode.TextDocument)=> {
+  const durationSortedCases: SnippetCase[] = items.sort((a, b)=> a.duration! - b.duration!)
+  const fulfilledWording: string[] = !durationSortedCases?.length ? 
+    []:
+    [
+      '\r\n', durationSortedCases
+      .map((a, index)=> 
+        `${index+1}. ${reversedRatio(a.duration!, index, caseDurations)} "${a.label?.trim()}" took ${a.duration?.toFixed(2)} ms`)
+      .join('\r\n')]
+    
 
-  if ( !matching ) return 
+  // get the definition matching, location to put diagnostics
+  const matching: RegExpMatchArray | null = /(?![\/]{2,}\s+)definition/i.exec(textDocument.getText())
 
-  const diagnostics: vscode.Diagnostic[] = matching.map(item=> {
+  // terminate 
+  if ( !text?.length || !matching?.length || !matching.index || !~matching.index ) return []
 
-    const range = new vscode.Range(
-      doc.positionAt(matching.index),
-      doc.positionAt(matching.index + item.length))
+  const diagnostics: vscode.Diagnostic[] = !matching?.length ?
+    []:
+    matching.map(a=> {
 
-    const diagnostic = new vscode.Diagnostic(
-      range,
-      `This is the fastest case`,
-      vscode.DiagnosticSeverity.Information)
+      const range = new vscode.Range(
+        textDocument.positionAt(matching.index!),
+        textDocument.positionAt(matching.index! + a.length))
 
-    diagnostic.source =  'Js Performance'
-    diagnostic.relatedInformation = [{
-      message: `Executed in ${a.stdout} ms`,
-      location: {
-        uri: doc.uri,
-        range,
-      },
-    }]
+      const diagnostic = new vscode.Diagnostic(
+        range, 
+        `The test took ${durationSortedCases.slice(-1)[0]?.duration?.toFixed(2)} ms`, 
+        vscode.DiagnosticSeverity.Information)
 
-    return diagnostic
+      diagnostic.source =  'Js Performance'
+      diagnostic.relatedInformation = [
+        {
+          message: fulfilledWording.join('\r\n'),
+          location: {
+            uri: textDocument.uri,
+            range,
+          },
+        }
+      ]
 
-  })
+      return diagnostic
 
-  return diagnostic 
-
-}
-
-export const buildDiagnostics = (cases: SnippetCase[], textDocument: vscode.TextDocument): vscode.Diagnostic[]=> {
-
-  if ( !cases?.length ) return []
-
-
-  // todo
-  // 1. Highlight the case result under the // case <case-title>
-  // 2. Highlight the fastest case
-  // 3. Highlight the slowest case
-  // 4. Show report of all cases on the // definition
-
-
-  const casesByDurationSortedAsc: SnippetCase[] = cases.sort((a, b)=> a.stdout! - b.stdout!)
-  const fastestCase: SnippetCase = casesByDurationSortedAsc[0]
-  const slowestCase: SnippetCase = casesByDurationSortedAsc[ casesByDurationSortedAsc.length - 1 ]
-
-  const fastestCaseMatching: RegExpMatchArray | null = fastestCase.content.match(caseRegexByLabel(fastestCase.label))
-  const slowestCaseMatching: RegExpMatchArray | null = slowestCase.content.match(caseRegexByLabel(slowestCase.label))
-
-  const definitionCaseMatching: RegExpMatchArray | null = slowestCase.content.match(/(?![\/]{2,}\s+)definition/i)
+    })
 
 
-  // const matchingCase: RegExpMatchArray | null = a.content.match(/([\/]{2,}\s+case[\s\S]+?(?=[\/]{2,}\s+(case|definition)|$))/gi)
-
-  // if ( !matchingCase?.length ) return []
-  
-
-  // const matching: RegExpExecArray|null = new RegExp('result', 'gi')?.exec(textDocument.getText())
-
-  // const diagnostics: vscode.Diagnostic[] = !matching?.length ?
-  //   []:
-  //   matching.map(item=> {
-
-  //     const range = new vscode.Range(
-  //       textDocument.positionAt(matching.index),
-  //       textDocument.positionAt(matching.index + item.length))
-
-  //     const diagnostic = new vscode.Diagnostic(
-  //       range,
-  //       `This is the fastest case`,
-  //       vscode.DiagnosticSeverity.Information)
-
-  //     diagnostic.source =  'Js Performance'
-  //     diagnostic.relatedInformation = [{
-  //       message: `Executed in ${a.stdout} ms`,
-  //       location: {
-  //         uri: textDocument.uri,
-  //         range,
-  //       },
-  //     }]
-
-  //     return diagnostic
-
-  //   })
-
-
-  // return diagnostics
-
-  return []
+  return diagnostics
 
 }

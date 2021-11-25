@@ -49,8 +49,8 @@ export const generateCase = async (a: SnippetCase, subjectPath: string, index: n
           reject(err):
 
           // 2. shell: execute test-case
-          // exec( `node ${path}`, { async: !0 }, (_: any, stdout: any, err: any)=> 
-          cp.exec( `node ${path}`, (_: any, stdout: any, err: any)=> 
+          // exec( `node ${path}`, { async: !0 }, (_: any, duration: string, err: any)=> 
+          cp.exec( `node ${path}`, (_: any, duration: string, err: any)=> 
           
             !validateObject(err) ? 
             
@@ -58,7 +58,7 @@ export const generateCase = async (a: SnippetCase, subjectPath: string, index: n
               unlink(path, ()=>  
 
                 // 4. resolve after deletion
-                resolve({ ...a, stdout: parseFloat(stdout) })):
+                resolve({ ...a, duration: parseFloat(duration) })):
                 reject(err)))
 
       })

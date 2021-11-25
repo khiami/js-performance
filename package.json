@@ -2,7 +2,7 @@
   "name": "jsperformance",
   "displayName": "JavaScript Performance",
   "description": "Run multiple JavaScript test-cases against a certain logic in VS Code and find out the fastest one.",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "engines": {
     "vscode": "^1.62.0"
   },

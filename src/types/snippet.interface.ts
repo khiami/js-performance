@@ -2,7 +2,7 @@ export interface SnippetCase {
   content: string;
   name: string;
   label: string;
-  stdout?: number;
+  duration?: number;
 }
 
 export interface Snippet {
