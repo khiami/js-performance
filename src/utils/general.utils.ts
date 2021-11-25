@@ -108,7 +108,7 @@ export function reversedRatio(value: number, index: number, sequence: number[]):
       Math.abs(((value - sequence[length - 1]) / sequence[length - 1]) * 100)
 
   return !ratio ?
-    '0%':
+    '-':
     `${ratio.toFixed(2)}%`
 
 }
