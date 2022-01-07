@@ -69,6 +69,10 @@ It supports vanilla JavaScript at the moment.
 
 Open Extenion settings to change the (n) of times each case is executed. Default is set to 100K
 
+## Extension Updates
+0.0.13 You can set the execution times at the definition level, e.g. 
+  // definition, run 100000 times
+
 ## Todo/Future Updates
 
 1. Support wider range of definition/case syntax/format
