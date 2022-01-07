@@ -2,6 +2,13 @@ import * as vscode from 'vscode'
 import { PromiseStatus } from '../enum'
 import { SnippetCase } from '../types'
 
+export function typeOf(...arg: any[]) {
+
+  if (!arguments[0]) return !1;
+  return !arguments[1] ? Object.prototype.toString.call(arguments[0]).slice(8, -1).toLowerCase() : Object.prototype.toString.call(arguments[0]).slice(8, -1).toLowerCase() === arguments[1]
+
+}
+
 export const debounce = <F extends (...args: any[]) => any>(
   func: F,
   waitFor: number,
@@ -71,12 +78,22 @@ export const sanitizeCaseName = (v: string = ''): string=> {
   
   }
 
-export const validateObject = (object: unknown): boolean=> 
-  typeof object !== 'undefined' && 
-  !!object && 
-  (typeof object === 'string' ? 
-    !!(<string>object)?.length:
-    true)
+export const isError = (err: unknown): boolean => {
+
+  switch ( typeOf(err) ) {
+
+    case 'string':
+      return !!(err as string)?.length
+    
+    case 'object':
+      return !!Object.keys(err as any)?.length
+
+    default:
+      return !!err
+
+  }
+
+}
 
 
 
@@ -103,7 +120,7 @@ export const isValid = (ob: unknown): boolean=>
 export function reversedRatio(value: number, index: number, sequence: number[]): string {
 
   const length: number = sequence?.length
-  const ratio: number = !length || !~index || !~value || (!!sequence && !!length && length - 1 === index) ?
+  const ratio: number = !~index || !~value || (!!sequence && length - 1 === index) ?
       0:
       Math.abs(((value - sequence[length - 1]) / sequence[length - 1]) * 100)
 
@@ -122,3 +139,11 @@ export const settledPromiseValue = (items: PromiseSettledResult<any>[]): any[] =
 export const captureFastestCase = (items: SnippetCase[]): SnippetCase => 
   [ ...items ].sort((a, b)=> 
     a.duration! - b.duration!)[0]
+
+export function formatAccountingStyle(num: string, n: number, x?: number, s?: string, c?: string) {
+
+  const re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')'
+
+  return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','))
+
+}

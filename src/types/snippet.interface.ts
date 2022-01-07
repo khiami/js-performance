@@ -7,5 +7,6 @@ export interface SnippetCase {
 
 export interface Snippet {
   definition: string;
-  cases: SnippetCase[]
+  cases: SnippetCase[];
+  interval?: number|null;
 }

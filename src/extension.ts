@@ -55,6 +55,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 		// parse selection
 		const parsedSnippet: Snippet|null = parseSnippet(selectedText)
+		const interval: number = parsedSnippet?.interval || caseInterval
 
 		// generate js cases
 		const p: Array<Promise<SnippetCase>> = !parsedSnippet?.cases?.length ? 
@@ -66,7 +67,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 				// start generating the parsed cases
 				parsedSnippet.cases.map((a, index)=> 
-					generateCase(a, dirname(activeFilePath), index, caseInterval)))
+					generateCase(a, dirname(activeFilePath), index, interval)))
 
 
 		// show results
@@ -92,7 +93,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 					
 					// refresh the benchmark results, highlighted on definition
-					return diagnosticCollecion.set(e.textEditor.document.uri, buildDiagnostics(resolvedCases, editor.document))
+					return diagnosticCollecion.set(e.textEditor.document.uri, buildDiagnostics(resolvedCases, interval, editor.document))
 
 				})
 				.catch(()=> 

@@ -3,8 +3,7 @@ import { unlink, writeFile } from 'fs'
 import { join, resolve, dirname } from 'path'
 import { SnippetCase } from '../types'
 import { rejects } from 'assert'
-import { validateObject } from '../utils'
-
+import { isError, typeOf, } from '../utils'
 
 
 export const buildCase = (a: SnippetCase, interval?: number): string=> 
@@ -48,18 +47,12 @@ export const generateCase = async (a: SnippetCase, subjectPath: string, index: n
         err ? 
           reject(err):
 
-          // 2. shell: execute test-case
-          // exec( `node ${path}`, { async: !0 }, (_: any, duration: string, err: any)=> 
+          // 2. process: execute test-case
           cp.exec( `node ${path}`, (_: any, duration: string, err: any)=> 
-          
-            !validateObject(err) ? 
-            
-              // 3. delete test-case after successful execution
-              unlink(path, ()=>  
-
-                // 4. resolve after deletion
-                resolve({ ...a, duration: parseFloat(duration) })):
-                reject(err)))
+            unlink(path, ()=> 
+              isError(err) ? 
+                reject(err):
+                resolve({ ...a, duration: parseFloat(duration) }))))
 
       })
 
