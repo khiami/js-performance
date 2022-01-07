@@ -70,8 +70,15 @@ It supports vanilla JavaScript at the moment.
 Open Extenion settings to change the (n) of times each case is executed. Default is set to 100K
 
 ## Extension Updates
-0.0.13 You can set the execution times at the definition level, e.g. 
-  // definition, run 100000 times
+0.0.13 You can set the execution times at the definition level, e.g.
+```javascript
+// definition, run 90000 times 
+const arrayValues = [ 11, 33, 44, 55, 44, 55, 102, 1033, 44 ]
+
+..
+..
+
+```
 
 ## Todo/Future Updates
 
