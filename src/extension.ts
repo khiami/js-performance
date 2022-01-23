@@ -92,6 +92,10 @@ export function activate(context: vscode.ExtensionContext) {
 					statusBar.update( filterAndJoin(statusBarMessage, '. ') )
 
 					
+					!rejectedCases?.length ? 
+						null:
+						log( 'rejected cases ', JSON.stringify(rejectedCases.map(a=> a.reason).join('\n\n')) )
+
 					// refresh the benchmark results, highlighted on definition
 					return diagnosticCollecion.set(e.textEditor.document.uri, buildDiagnostics(resolvedCases, interval, editor.document))
 
