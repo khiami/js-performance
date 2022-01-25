@@ -7,7 +7,7 @@
 
 This is a VSCode extension available at the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=MazenKhiami.jsperformance).
 
-Run multiple JavaScript test-cases against a certain logic in VS Code and simply find out the fastest one.
+This is an extension to easily create JavaScript performance benchmark when highlighting your script.
 The result will appear in the status bar where the case name will be used. The extension may notify if the highlighted snippet didn't run successfully.
 
 Make sure to include all functions/variables/arrays etc.. related to the highlighted definition/case in the selected range, so that the extension can run each case separately.
