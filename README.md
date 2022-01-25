@@ -7,9 +7,7 @@
 
 This is a VSCode extension available at the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=MazenKhiami.jsperformance).
 
-[![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT)
-
-[![Downloads](https://vsmarketplacebadge.apphb.com/downloads-short/khiami.js-performance.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=MazenKhiami.jsperformance)
+[![Badge for version for Visual Studio Code extension khiami.js-performance](https://vsmarketplacebadge.apphb.com/version/khiami.js-performance.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=MazenKhiami.jsperformance) [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT)
 
 This is an extension to easily create JavaScript performance benchmark when highlighting your script.
 The result will appear in the status bar where the case name will be used. The extension may notify if the highlighted snippet didn't run successfully.
@@ -77,6 +75,7 @@ Open Extenion settings to change the (n) of times each case is executed. Default
 ## Extension Updates
 0.0.14 The extension reports the error as a side notification, when applicable.
 0.0.13 You can set the execution times at the definition level, e.g.
+
 ```javascript
 // definition, run 90000 times 
 const arrayValues = [ 11, 33, 44, 55, 44, 55, 102, 1033, 44 ]
